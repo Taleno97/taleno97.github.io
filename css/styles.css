@@ -1,0 +1,7 @@
+.content-wrapper{
+    max-width: 1240px;
+    height: 600px;
+}
+body{
+    background-color: rgba(0,0,0,0.15);
+}
