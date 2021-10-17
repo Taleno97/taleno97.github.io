@@ -36,23 +36,25 @@ class weightCalculator {
         let usedWeightSum = 0
         let rightSideWeight;
         let combinations = [];
+        let tmpRightSideWeight;
+        let tmpLeftSideArray;
+        usableWeights.sort();
         for(let i = 0; i < usableWeights.length ; i++) {
-            if(weightToCalculate < usableWeights[i]){
-                let tmpRightSightWeight = usableWeights[i];
-                console.log(tmpRightSightWeight);
-                let tmpLeftSideArray = [...usableWeights.slice(0, i), ...usableWeights.slice(i + 1)];
-                for(let k = 0; k < tmpLeftSideArray.length ; k++){
-                    if((weightToCalculate + usedWeightSum + usableWeights[k]) <= tmpRightSightWeight){
-                        usedWeightSum += usableWeights[k];
-                        combinations.push(usableWeights[k]);
+            if(weightToCalculate < usableWeights[i]) {
+                tmpRightSideWeight = usableWeights[i];
+                tmpLeftSideArray = [...usableWeights.slice(0, i), ...usableWeights.slice(i + 1)];
+                tmpLeftSideArray.sort().reverse();
+                for (let k = 0; k < tmpLeftSideArray.length; k++) {
+                    if ((weightToCalculate + usedWeightSum + tmpLeftSideArray[k]) <= tmpRightSideWeight) {
+                        usedWeightSum += tmpLeftSideArray[k];
+                        combinations.push(tmpLeftSideArray[k]);
                     }
                 }
-                /* TODO: FIX RETURN STATEMENT*/
                 return {
                     combinations,
-                    success: (usedWeightSum + weightToCalculate) == tmpRightSightWeight,
-                    'used Weight Sum Left Side':usedWeightSum,
-                    'used Weight Right Side':tmpRightSightWeight,
+                    success: (usedWeightSum + weightToCalculate) == tmpRightSideWeight,
+                    'used Weight Sum Left Side': usedWeightSum,
+                    'used Weight Right Side': tmpRightSideWeight,
                     weightToCalculate
                 }
             }
@@ -69,6 +71,9 @@ weightsToCheck = myWeightCalculator.allWeights();
 //   let result = myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]);
 // console.table(result);
 //}
-let result = myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, 5570);
-console.table(result);
+let result = [];
+for(let i = 0; i < weightsToCheck.length ; i++){
+    console.table(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+}
+
 // console.table(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, 5570, 0 ,[], [], [], 0));
