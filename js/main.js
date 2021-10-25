@@ -18,4 +18,4 @@ const app = Vue.createApp({
             this.counter += 1;
         }
     }
-})
+}).mount('#app');

@@ -65,15 +65,23 @@ class weightCalculator {
 
 myWeightCalculator = new weightCalculator();
 weightsToCheck = myWeightCalculator.allWeights();
-//console.table(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, 5570));
 
-//for(let i = 0; i < weightsToCheck.length ; i++) {
-//   let result = myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]);
-// console.table(result);
-//}
+console.log('Kombinationen rechte Seite:');
+let resultRightSide = [];
+for(let i = 0; i < weightsToCheck.length ; i++) {
+   resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+
+}
+console.table(resultRightSide);
+/*
+console.log('Kombinationen linke + rechte Seite:');
 let result = [];
 for(let i = 0; i < weightsToCheck.length ; i++){
-    console.table(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+    tmpResult = myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]);
+    if(tmpResult){
+        result.push(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+    }
 }
+console.table(result);
+*/
 
-// console.table(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, 5570, 0 ,[], [], [], 0));
