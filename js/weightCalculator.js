@@ -5,7 +5,7 @@ class weightCalculator {
     * alle Gewichte die ich verwenden kann                          - myUsableWeights
     * alle Kombinationen um die gewünschten Gewichte abzubilden      - combinations
     * */
-    constructor(allWeights, myUsableWeights, combinations) {
+    constructor(allWeights, myUsableWeights) {
         this.allWeights = function (){
             let tmpArray = [];
             for(let i = 0; i < 1000; i++){
@@ -14,7 +14,6 @@ class weightCalculator {
             return tmpArray;
         };
         this.myUsableWeights = [5000, 1000, 1000, 1000, 500, 500, 500, 100, 100, 100,50, 50, 10, 10, 10];
-        this.combinations = combinations;
     }
     calculateCombinations(usableWeights, weightToCalculate) {
         let usedWeightSum = 0
@@ -24,17 +23,16 @@ class weightCalculator {
                 usedWeightSum += usableWeights[i];
                 combinations.push(usableWeights[i])
             }
-        };
+        }
         return {
             combinations,
-            success: usedWeightSum == weightToCalculate,
+            success: usedWeightSum === weightToCalculate,
             'used Weight Sum':usedWeightSum,
             weightToCalculate
         }
     }
     calculateLeftSideCombinations(usableWeights, weightToCalculate) {
         let usedWeightSum = 0
-        let rightSideWeight;
         let combinations = [];
         let tmpRightSideWeight;
         let tmpLeftSideArray;
@@ -52,13 +50,13 @@ class weightCalculator {
                 }
                 return {
                     combinations,
-                    success: (usedWeightSum + weightToCalculate) == tmpRightSideWeight,
+                    success: (usedWeightSum + weightToCalculate) === tmpRightSideWeight,
                     'used Weight Sum Left Side': usedWeightSum,
                     'used Weight Right Side': tmpRightSideWeight,
                     weightToCalculate
                 }
             }
-        };
+        }
     }
 
 }
@@ -66,14 +64,14 @@ class weightCalculator {
 myWeightCalculator = new weightCalculator();
 weightsToCheck = myWeightCalculator.allWeights();
 
-console.log('Kombinationen rechte Seite:');
-let resultRightSide = [];
-for(let i = 0; i < weightsToCheck.length ; i++) {
-   resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+// console.log('Kombinationen rechte Seite:');
+// let resultRightSide = [];
+// for(let i = 0; i < weightsToCheck.length ; i++) {
+//    resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+//
+// }
+// console.table(resultRightSide);
 
-}
-console.table(resultRightSide);
-/*
 console.log('Kombinationen linke + rechte Seite:');
 let result = [];
 for(let i = 0; i < weightsToCheck.length ; i++){
@@ -83,5 +81,5 @@ for(let i = 0; i < weightsToCheck.length ; i++){
     }
 }
 console.table(result);
-*/
+
 
