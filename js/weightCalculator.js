@@ -168,7 +168,7 @@ document.getElementById('inputfile').addEventListener('change', function (){
         }
         for(let i = 0; i < fileContent.length; i++){
             for(let k = 0; k < fileContent[i][1]; k++){
-                weightArray.push(fileContent[i][0]);
+                weightArray.push(parseInt(fileContent[i][0]));
             }
         }
         weightArray.sort(function(a,b){
@@ -182,6 +182,7 @@ document.getElementById('inputfile').addEventListener('change', function (){
         for(let i = 0; i < weightsToCheck.length ; i++){
             resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(weightArray, weightsToCheck[i]));
         }
+        console.table(resultLeftAndRightSide);
         let finalResult = myWeightCalculator.buildResult(resultRightSide, resultLeftAndRightSide);
         myWeightCalculator.showResult(outputElement, finalResult);
     }
