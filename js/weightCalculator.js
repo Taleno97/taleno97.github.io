@@ -75,6 +75,7 @@ class weightCalculator {
         }
     }
     showResult(htmlElement, result){
+        htmlElement.innerHTML = "";
         let tbl = document.createElement('table');
         tbl.style.width = "300px";
         tbl.style.border = "1px solid black";
