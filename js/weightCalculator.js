@@ -27,7 +27,7 @@ class weightCalculator {
         return {
             combinations,
             success: usedWeightSum === weightToCalculate,
-            'used Weight Sum':usedWeightSum,
+            usedWeightSum,
             weightToCalculate
         }
     }
@@ -36,12 +36,16 @@ class weightCalculator {
         let combinations = [];
         let tmpRightSideWeight;
         let tmpLeftSideArray;
-        usableWeights.sort();
+        usableWeights.sort(function (a,b){
+            return (+a) - (+b);
+        });
         for(let i = 0; i < usableWeights.length ; i++) {
             if(weightToCalculate < usableWeights[i]) {
                 tmpRightSideWeight = usableWeights[i];
                 tmpLeftSideArray = [...usableWeights.slice(0, i), ...usableWeights.slice(i + 1)];
-                tmpLeftSideArray.sort().reverse();
+                tmpLeftSideArray.sort((a,b) => {
+                    return (+a) - (+b);
+                }).reverse();
                 for (let k = 0; k < tmpLeftSideArray.length; k++) {
                     if ((weightToCalculate + usedWeightSum + tmpLeftSideArray[k]) <= tmpRightSideWeight) {
                         usedWeightSum += tmpLeftSideArray[k];
@@ -51,19 +55,19 @@ class weightCalculator {
                 return {
                     combinations,
                     success: (usedWeightSum + weightToCalculate) === tmpRightSideWeight,
-                    'used Weight Sum Left Side': usedWeightSum,
-                    'used Weight Right Side': tmpRightSideWeight,
+                    usedWeightSum,
+                    tmpRightSideWeight,
                     weightToCalculate
                 }
             }
-            else if (weightToCalculate > usableWeights[i]) {
-                if(i == (usableWeights.length - 1)){
+            else if (weightToCalculate >= usableWeights[i]) {
+                if(i === (usableWeights.length - 1)){
                     tmpRightSideWeight = 'no bigger weight available';
                     return{
                         combinations,
                         success: false,
-                        'used Weight Sum Left Side': usedWeightSum,
-                        'used Weight Right Side': tmpRightSideWeight,
+                        usedWeightSum,
+                        tmpRightSideWeight,
                         weightToCalculate
                     }
                 }
@@ -74,12 +78,49 @@ class weightCalculator {
         let tbl = document.createElement('table');
         tbl.style.width = "300px";
         tbl.style.border = "1px solid black";
-        let size = Object.keys(result[0]).length;
+        const th = tbl.insertRow();
+        const th1 = th.insertCell();
+        th1.appendChild(document.createTextNode('Auszurechnendes Gewicht:'));
+        th1.style.border = "1px solid black";
+        const th2 = th.insertCell();
+        th2.appendChild(document.createTextNode('Erfolg?'));
+        th2.style.border = "1px solid black";
+        const th3 = th.insertCell();
+        th3.appendChild(document.createTextNode('Benutzte Gewichte'));
+        th3.style.border = "1px solid black";
+        const th4 = th.insertCell();
+        th4.appendChild(document.createTextNode('Summe der verwendeten Gewichte'));
+        th4.style.border = "1px solid black";
+        const th5 = th.insertCell();
+        th5.appendChild(document.createTextNode('Gewicht auf der rechten Seite'));
+        th5.style.border = "1px solid black";
         for(let i = 0; i < result.length; i++){
+            let size = Object.keys(result[i]).length;
             const tr = tbl.insertRow();
             for(let j = 0; j < size; j++){
                 const td = tr.insertCell();
-                td.appendChild(document.createTextNode(Object.values(result[i])[j])); 
+                switch(j){
+                    case 0:
+                        td.appendChild(document.createTextNode(result[i].weightToCalculate));
+                        break;
+                    case 1:
+                        td.appendChild(document.createTextNode(result[i].success));
+                        break;
+                    case 2:
+                        td.appendChild(document.createTextNode(result[i].combinations.sort(function (a,b){
+                            return (+a) - (+b);
+                        }).reverse()));
+                        break;
+                    case 3:
+                        td.appendChild(document.createTextNode(result[i].usedWeightSum));
+                        break;
+                    case 4:
+                        td.appendChild(document.createTextNode(result[i].tmpRightSideWeight));
+                        break;
+                    default:
+                        console.log('error');
+                        break;
+                }
                 td.style.border = "1px solid black";
             }
         }
@@ -88,11 +129,13 @@ class weightCalculator {
     buildResult(resultRightSide, resultLeftSide){
         let finalResult = [];
         for(let i = 0; i < resultRightSide.length; i++){
+            //if(i == 100) break;
             if (resultRightSide[i].success){
-                finalResult.push(resultRightSide);
+                finalResult.push(resultRightSide[i]);
             }
             else if (resultLeftSide[i].success){
-                finalResult.push(resultLeftSide);
+                //console.table(resultLeftSide[i]);
+                finalResult.push(resultLeftSide[i]);
             }
             else{
                 let rightSideDifference = resultRightSide[i].weightToCalculate - resultRightSide[i].usedWeightSum;
@@ -107,34 +150,39 @@ class weightCalculator {
         }
         return finalResult;
     }
-
 }
 
 let myWeightCalculator = new weightCalculator();
 weightsToCheck = myWeightCalculator.allWeights();
 let outputElement = document.getElementById('marktwaage');
 
-
-console.log('Kombinationen rechte Seite:');
-let resultRightSide = [];
-for(let i = 0; i < weightsToCheck.length ; i++) {
-    resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
-}
-console.table(resultRightSide);
-
-
-
-console.log('Kombinationen linke + rechte Seite:');
-let result = [];
-for(let i = 0; i < weightsToCheck.length ; i++){
-    tmpResult = myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]);
-    if(tmpResult){
-        result.push(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+document.getElementById('inputfile').addEventListener('change', function (){
+    let fr = new FileReader();
+    let weightArray = [];
+    fr.onload = function (){
+        fileContent = fr.result.split('\r\n');
+        fileContent.shift();
+        for(let i = 0; i < fileContent.length; i++){
+            fileContent[i] = fileContent[i].split(' ');
+        }
+        for(let i = 0; i < fileContent.length; i++){
+            for(let k = 0; k < fileContent[i][1]; k++){
+                weightArray.push(fileContent[i][0]);
+            }
+        }
+        weightArray.sort(function(a,b){
+            return (+a) - (+b);
+        }).reverse();
+        let resultRightSide = [];
+        let resultLeftAndRightSide = [];
+        for(let i = 0; i < weightsToCheck.length ; i++) {
+            resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+        }
+        for(let i = 0; i < weightsToCheck.length ; i++){
+            resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+        }
+        let finalResult = myWeightCalculator.buildResult(resultRightSide, resultLeftAndRightSide);
+        myWeightCalculator.showResult(outputElement, finalResult);
     }
-}
-console.table(result);
-
-
-let finalResult = myWeightCalculator.buildResult(resultRightSide, result);
-// console.table(finalResult);
-// myWeightCalculator.showResult(outputElement, finalResult);
+    fr.readAsText(this.files[0]);
+})

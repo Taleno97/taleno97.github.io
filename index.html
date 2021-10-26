@@ -2,33 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Leno's Github Page</title>
-    <script src="https://unpkg.com/vue@next"></script>
+    <title>Lennart's Marktwaage</title>
     <link rel="stylesheet/less" type="text/css" href="less/styles.less" />
     <script src="https://cdn.jsdelivr.net/npm/less@4.1.1" ></script>
 </head>
 <body>
 <div class="content-wrapper">
     <h1 class="main-heading">Weight Calculator BWINF</h1>
-    <div id="app">
-        <h2>{{ product }}</h2>
-        <p>{{ description }}</p>
-        <a class="btn" :href="url">Click Me!</a>
-        <p v-if="booleanVal">Condition 1</p>
-        <p v-show="booleanVal">Condition 1 displayed</p>
-        <div v-for="operation in operations" :key="operation.id">{{ operation.operation }}</div>
-        <p>Counter: {{ counter }}</p>
-        <button v-on:click="incrementButton"></button>
-    </div>
+    <form>
+        <input type="file" name="inputfile" id="inputfile">
+    </form>
+    <pre id="output"></pre>
+    <div id="marktwaage"></div>
 </div>
 
-<!-- import app -->
-<script src="./js/main.js"></script>
-
-<!-- mount app -->
-<script>
-    const mountedApp = app.mount('#app')
-    //mountedApp.product = 'Test';
-</script>
+<!-- import calculator -->
+<script src="./js/weightCalculator.js"></script>
 </body>
 </html>
