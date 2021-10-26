@@ -56,21 +56,73 @@ class weightCalculator {
                     weightToCalculate
                 }
             }
+            else if (weightToCalculate > usableWeights[i]) {
+                if(i == (usableWeights.length - 1)){
+                    tmpRightSideWeight = 'no bigger weight available';
+                    return{
+                        combinations,
+                        success: false,
+                        'used Weight Sum Left Side': usedWeightSum,
+                        'used Weight Right Side': tmpRightSideWeight,
+                        weightToCalculate
+                    }
+                }
+            }
         }
+    }
+    showResult(htmlElement, result){
+        let tbl = document.createElement('table');
+        tbl.style.width = "300px";
+        tbl.style.border = "1px solid black";
+        let size = Object.keys(result[0]).length;
+        for(let i = 0; i < result.length; i++){
+            const tr = tbl.insertRow();
+            for(let j = 0; j < size; j++){
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(Object.values(result[i])[j])); 
+                td.style.border = "1px solid black";
+            }
+        }
+        htmlElement.appendChild(tbl);
+    }
+    buildResult(resultRightSide, resultLeftSide){
+        let finalResult = [];
+        for(let i = 0; i < resultRightSide.length; i++){
+            if (resultRightSide[i].success){
+                finalResult.push(resultRightSide);
+            }
+            else if (resultLeftSide[i].success){
+                finalResult.push(resultLeftSide);
+            }
+            else{
+                let rightSideDifference = resultRightSide[i].weightToCalculate - resultRightSide[i].usedWeightSum;
+                let leftSideDifference = resultLeftSide[i].weightToCalculate - resultLeftSide[i].usedWeightSum;
+                if(rightSideDifference <= leftSideDifference){
+                    finalResult.push(resultRightSide[i]);
+                }
+                else{
+                    finalResult.push(resultLeftSide[i]);
+                }
+            }
+        }
+        return finalResult;
     }
 
 }
 
-myWeightCalculator = new weightCalculator();
+let myWeightCalculator = new weightCalculator();
 weightsToCheck = myWeightCalculator.allWeights();
+let outputElement = document.getElementById('marktwaage');
 
-// console.log('Kombinationen rechte Seite:');
-// let resultRightSide = [];
-// for(let i = 0; i < weightsToCheck.length ; i++) {
-//    resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
-//
-// }
-// console.table(resultRightSide);
+
+console.log('Kombinationen rechte Seite:');
+let resultRightSide = [];
+for(let i = 0; i < weightsToCheck.length ; i++) {
+    resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+}
+console.table(resultRightSide);
+
+
 
 console.log('Kombinationen linke + rechte Seite:');
 let result = [];
@@ -83,3 +135,6 @@ for(let i = 0; i < weightsToCheck.length ; i++){
 console.table(result);
 
 
+let finalResult = myWeightCalculator.buildResult(resultRightSide, result);
+// console.table(finalResult);
+// myWeightCalculator.showResult(outputElement, finalResult);
