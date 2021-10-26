@@ -13,7 +13,7 @@ class weightCalculator {
             }
             return tmpArray;
         };
-        this.myUsableWeights = [5000, 1000, 1000, 1000, 500, 500, 500, 100, 100, 100,50, 50, 10, 10, 10];
+        //this.myUsableWeights = [5000, 1000, 1000, 1000, 500, 500, 500, 100, 100, 100,50, 50, 10, 10, 10];
     }
     calculateCombinations(usableWeights, weightToCalculate) {
         let usedWeightSum = 0
@@ -177,10 +177,10 @@ document.getElementById('inputfile').addEventListener('change', function (){
         let resultRightSide = [];
         let resultLeftAndRightSide = [];
         for(let i = 0; i < weightsToCheck.length ; i++) {
-            resultRightSide.push(myWeightCalculator.calculateCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+            resultRightSide.push(myWeightCalculator.calculateCombinations(weightArray, weightsToCheck[i]));
         }
         for(let i = 0; i < weightsToCheck.length ; i++){
-            resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(myWeightCalculator.myUsableWeights, weightsToCheck[i]));
+            resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(weightArray, weightsToCheck[i]));
         }
         let finalResult = myWeightCalculator.buildResult(resultRightSide, resultLeftAndRightSide);
         myWeightCalculator.showResult(outputElement, finalResult);
