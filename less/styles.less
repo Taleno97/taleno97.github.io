@@ -21,6 +21,45 @@ button{
 }
 #marktwaage{
     table{
+        border-collapse: collapse;
+        border-radius: 3px;
         margin: 0 auto;
+        min-width: 50%;
+        tr{
+            height: 24px;
+            transition: height 0.5s ease;
+            td{
+                height: 24px;
+            }
+        }
+        tr:nth-child(2n){
+            background-color: rgba(0,0,0,0.2);
+        }
+        tr.success td:nth-child(2){
+            background-color: #32cd3296;
+        }
+        tr.hide{
+            height: 0;
+            font-size: 0;
+            border: none !important;
+            white-space: nowrap;
+            border-collapse: collapse;
+            td{
+                height: 0;
+                font-size: 0;
+                margin: 0;
+                padding: 0;
+                border: none !important;
+                white-space: nowrap;
+                display: inline-block;
+            }
+        }
+        td{
+            padding: 0.125rem;
+        }
     }
+}
+button{
+    width: auto;
+    height: auto;
 }

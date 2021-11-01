@@ -61,18 +61,57 @@ class weightCalculator {
             }
             else if (weightToCalculate >= usableWeights[i]) {
                 if(i === (usableWeights.length - 1)){
-                    tmpRightSideWeight = 'no bigger weight available';
+                    //tmpRightSideWeight = 'no bigger weight available';
+                    tmpRightSideWeight = 0; // summe der gewichte auf der rechten seite
+                    tmpLeftSideArray = []; // Array für übrige gewichte
+                    let tmpRightSideArray = [];
+                    let lastLoop = false;
+                    usableWeights.sort(function (a,b){
+                        return (+b) - (+a);
+                    });
+                    let tmpRightSideLoopArray = usableWeights;
+                    usedWeightSum = 0; // zwischenzumme
+                    for(let n = 0; n < usableWeights.length; n++) {
+                        if (weightToCalculate >= (usableWeights[n] + tmpRightSideWeight)) {
+                            tmpRightSideWeight += usableWeights[n];
+                            tmpRightSideArray.push(usableWeights[n]);
+                        } else {
+                            if (!lastLoop) {
+                                tmpRightSideWeight += usableWeights[n];
+                                tmpRightSideArray.push(usableWeights[n]);
+                            }
+                            lastLoop = true;
+                        }
+                    }
+                    for(let m = 0; m < tmpRightSideArray.length; m++){
+                        //tmpRightSideLoopArray = [...usableWeights.slice(0, n), ...usableWeights.slice(i + n)];
+                        const index = tmpRightSideLoopArray.indexOf(tmpLeftSideArray[m]);
+                        if (index > -1){
+                            tmpRightSideLoopArray.splice(index, 1);
+                        }
+                    }
+                    tmpRightSideLoopArray.sort(function (a,b){
+                        return (+b) - (+a);
+                    });
+                    //console.table('Hier das array mit übrigen gwichten für die linke seite');
+                    //console.table(tmpRightSideLoopArray);
+                    for(let z = 0; z < tmpRightSideLoopArray.length; z++){
+                        if((weightToCalculate + tmpRightSideLoopArray[z] + usedWeightSum) <= tmpRightSideWeight){
+                            combinations.push(tmpRightSideLoopArray[z]);
+                            usedWeightSum += tmpRightSideLoopArray[z];
+                        }
+                    }
                     return{
                         combinations,
-                        success: false,
+                        success: (weightToCalculate + usedWeightSum) === tmpRightSideWeight,
                         usedWeightSum,
                         tmpRightSideWeight,
                         weightToCalculate
                     }
                 }
+                }
             }
         }
-    }
     showResult(htmlElement, result){
         htmlElement.innerHTML = "";
         let tbl = document.createElement('table');
@@ -92,7 +131,7 @@ class weightCalculator {
         th4.appendChild(document.createTextNode('Summe der verwendeten Gewichte'));
         th4.style.border = "1px solid black";
         const th5 = th.insertCell();
-        th5.appendChild(document.createTextNode('Gewicht auf der rechten Seite'));
+        th5.appendChild(document.createTextNode('Benutztes Gegengewicht'));
         th5.style.border = "1px solid black";
         for(let i = 0; i < result.length; i++){
             let size = Object.keys(result[i]).length;
@@ -105,6 +144,11 @@ class weightCalculator {
                         break;
                     case 1:
                         td.appendChild(document.createTextNode(result[i].success));
+                        if(result[i].success){
+                            tr.classList.add('success');
+                        }else{
+                            tr.classList.add('false');
+                        }
                         break;
                     case 2:
                         td.appendChild(document.createTextNode(result[i].combinations.sort(function (a,b){
@@ -122,6 +166,12 @@ class weightCalculator {
                         break;
                 }
                 td.style.border = "1px solid black";
+            }
+            if(size < 5){
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode('-'));
+                td.style.border = "1px solid black";
+
             }
         }
         htmlElement.appendChild(tbl);
@@ -179,9 +229,31 @@ document.getElementById('inputfile').addEventListener('change', function (){
         for(let i = 0; i < weightsToCheck.length ; i++){
             resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(weightArray, weightsToCheck[i]));
         }
-        console.table(resultLeftAndRightSide);
+        //console.table(resultLeftAndRightSide);
         let finalResult = myWeightCalculator.buildResult(resultRightSide, resultLeftAndRightSide);
         myWeightCalculator.showResult(outputElement, finalResult);
     }
     fr.readAsText(this.files[0]);
 })
+
+function showAll(){
+    let allHiddenItems = document.querySelectorAll('.hide');
+    for(let i = 0; i < allHiddenItems.length; i++){
+        allHiddenItems[i].classList.remove('hide');
+    }
+}
+function hideTrue(){
+    showAll();
+    let allItemsToHide = document.querySelectorAll('tr.success');
+    for(let i = 0; i < allItemsToHide.length; i++){
+        allItemsToHide[i].classList.add('hide');
+    }
+}
+function hideFalse(){
+    showAll();
+    let allItemsToHide = document.querySelectorAll('tr.false');
+    for(let i = 0; i < allItemsToHide.length; i++){
+        allItemsToHide[i].classList.add('hide');
+    }
+}
+

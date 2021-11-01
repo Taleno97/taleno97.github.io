@@ -9,9 +9,14 @@
 <body>
 <div class="content-wrapper">
     <h1 class="main-heading">Weight Calculator BWINF</h1>
+    <div class="user-action-box">
     <form>
         <input type="file" name="inputfile" id="inputfile">
     </form>
+        <button id="showAll" onclick="showAll()">Alle anzeigen</button>
+        <button id="showTrue" onclick="hideFalse()">Erfolgreiche anzeigen</button>
+        <button id="showFalse" onclick="hideTrue()">Unmögliche anzeigen</button>
+    </div>
     <pre id="output"></pre>
     <div id="marktwaage"></div>
 </div>
