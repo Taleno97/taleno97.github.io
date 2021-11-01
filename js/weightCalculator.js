@@ -1,5 +1,6 @@
 class weightCalculator {
     /*
+    BWINF 2021 Runde 1 Aufgabe 5 von Lennart Talaga
     * Klasse braucht:
     * alle Gewichte die ausgerechnet werden sollen                  - allWeights
     * alle Gewichte die ich verwenden kann                          - myUsableWeights
@@ -187,7 +188,7 @@ class weightCalculator {
             }
             else{
                 let rightSideDifference = resultRightSide[i].weightToCalculate - resultRightSide[i].usedWeightSum;
-                let leftSideDifference = resultLeftSide[i].weightToCalculate - resultLeftSide[i].usedWeightSum;
+                let leftSideDifference = resultLeftSide[i].tmpRightSideWeight - (resultLeftSide[i].weightToCalculate + resultLeftSide[i].usedWeightSum);
                 if(rightSideDifference <= leftSideDifference){
                     finalResult.push(resultRightSide[i]);
                 }
