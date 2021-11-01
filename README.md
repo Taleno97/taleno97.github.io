@@ -1,1 +1,2 @@
-# taleno97.github.io
+# Auch zu finden auf : taleno.eu
+# Das ist mein aktuellster Stand (28.10.2021). Die Doku und das Programm werde ich bis nächster Woche noch fertigstellen. Leider konnte ich das ohne vorherige Programmiererfahrung und Hilfe bisher noch nicht.

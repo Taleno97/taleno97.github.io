@@ -13,7 +13,6 @@ class weightCalculator {
             }
             return tmpArray;
         };
-        //this.myUsableWeights = [5000, 1000, 1000, 1000, 500, 500, 500, 100, 100, 100,50, 50, 10, 10, 10];
     }
     calculateCombinations(usableWeights, weightToCalculate) {
         let usedWeightSum = 0
@@ -130,12 +129,10 @@ class weightCalculator {
     buildResult(resultRightSide, resultLeftSide){
         let finalResult = [];
         for(let i = 0; i < resultRightSide.length; i++){
-            //if(i == 100) break;
             if (resultRightSide[i].success){
                 finalResult.push(resultRightSide[i]);
             }
             else if (resultLeftSide[i].success){
-                //console.table(resultLeftSide[i]);
                 finalResult.push(resultLeftSide[i]);
             }
             else{
