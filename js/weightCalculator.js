@@ -62,16 +62,15 @@ class weightCalculator {
             }
             else if (weightToCalculate >= usableWeights[i]) {
                 if(i === (usableWeights.length - 1)){
-                    //tmpRightSideWeight = 'no bigger weight available';
-                    tmpRightSideWeight = 0; // summe der gewichte auf der rechten seite
-                    tmpLeftSideArray = []; // Array für übrige gewichte
+                    tmpRightSideWeight = 0;
+                    tmpLeftSideArray = [];
                     let tmpRightSideArray = [];
                     let lastLoop = false;
                     usableWeights.sort(function (a,b){
                         return (+b) - (+a);
                     });
                     let tmpRightSideLoopArray = usableWeights;
-                    usedWeightSum = 0; // zwischenzumme
+                    usedWeightSum = 0;
                     for(let n = 0; n < usableWeights.length; n++) {
                         if (weightToCalculate >= (usableWeights[n] + tmpRightSideWeight)) {
                             tmpRightSideWeight += usableWeights[n];
@@ -85,7 +84,6 @@ class weightCalculator {
                         }
                     }
                     for(let m = 0; m < tmpRightSideArray.length; m++){
-                        //tmpRightSideLoopArray = [...usableWeights.slice(0, n), ...usableWeights.slice(i + n)];
                         const index = tmpRightSideLoopArray.indexOf(tmpLeftSideArray[m]);
                         if (index > -1){
                             tmpRightSideLoopArray.splice(index, 1);
@@ -94,8 +92,6 @@ class weightCalculator {
                     tmpRightSideLoopArray.sort(function (a,b){
                         return (+b) - (+a);
                     });
-                    //console.table('Hier das array mit übrigen gwichten für die linke seite');
-                    //console.table(tmpRightSideLoopArray);
                     for(let z = 0; z < tmpRightSideLoopArray.length; z++){
                         if((weightToCalculate + tmpRightSideLoopArray[z] + usedWeightSum) <= tmpRightSideWeight){
                             combinations.push(tmpRightSideLoopArray[z]);
@@ -230,7 +226,6 @@ document.getElementById('inputfile').addEventListener('change', function (){
         for(let i = 0; i < weightsToCheck.length ; i++){
             resultLeftAndRightSide.push(myWeightCalculator.calculateLeftSideCombinations(weightArray, weightsToCheck[i]));
         }
-        //console.table(resultLeftAndRightSide);
         let finalResult = myWeightCalculator.buildResult(resultRightSide, resultLeftAndRightSide);
         myWeightCalculator.showResult(outputElement, finalResult);
     }
