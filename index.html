@@ -2,26 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lennart's Marktwaage</title>
+    <title>Simple Vue APP</title>
     <link rel="stylesheet/less" type="text/css" href="less/styles.less" />
-    <script src="https://cdn.jsdelivr.net/npm/less@4.1.1" ></script>
+    <!-- less import -->
+    <script src="https://cdn.jsdelivr.net/npm/less@4.1.1"></script>
+    <!-- Vue import | development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
 <div class="content-wrapper">
-    <h1 class="main-heading">Weight Calculator BWINF</h1>
-    <div class="user-action-box">
-    <form>
-        <input type="file" name="inputfile" id="inputfile">
-    </form>
-        <button id="showAll" onclick="showAll()">Alle anzeigen</button>
-        <button id="showTrue" onclick="hideFalse()">Erfolgreiche anzeigen</button>
-        <button id="showFalse" onclick="hideTrue()">Unmögliche anzeigen</button>
+    <h1 class="main-heading">Simple Vue APP</h1>
+    <div id="app">
+        {{ message }}
     </div>
-    <pre id="output"></pre>
-    <div id="marktwaage"></div>
 </div>
 
-<!-- import calculator -->
-<script src="./js/weightCalculator.js"></script>
+<!-- import vue js -->
+<script src="./js/main.js"></script>
 </body>
 </html>
